@@ -1,7 +1,8 @@
 package org.example.model;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
+
+import java.util.List;
 
 @Entity
 @Table(name = "person")
@@ -17,9 +18,8 @@ public class Person {
     @Column(name = "age")
     private int age;
 
-    @OneToOne(mappedBy = "person")
-    @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
-    private Passport passport;
+    @OneToMany(mappedBy = "owner",fetch = FetchType.LAZY)
+    private List<Item> items;
 
     public Person() {
     }
@@ -53,21 +53,20 @@ public class Person {
         this.age = age;
     }
 
-    public Passport getPassport() {
-        return passport;
+    public List<Item> getItems() {
+        return items;
     }
 
-    public void setPassport(Passport passport) {
-        this.passport = passport;
-        passport.setPerson(this);
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 
     @Override
     public String toString() {
         return "Person{" +
-                "id=" + id +
+                "age=" + age +
                 ", name='" + name + '\'' +
-                ", age='" + age + '\'' +
+                ", id=" + id +
                 '}';
     }
 }
